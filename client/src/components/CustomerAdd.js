@@ -109,7 +109,7 @@ class CustomerAdd extends React.Component {
                     <DialogContent>
                         <input classnName={classes.hidden} accept="image/*" id="raised-button-file" type="file" file={this.state.file} value={this.state.fileName} onChange={this.handleFileChange}/><br/>
                         <label htmlFor="raised-button-file">
-                            <Button varient="contained" color="primary" component="span" name ="file">
+                            <Button variant="contained" color="primary" component="span" name ="file">
                                 {this.state.filename === "" ? "프로필 이미지 선택" : this.state.fileName}
                             </Button>
                         </label>
@@ -120,8 +120,8 @@ class CustomerAdd extends React.Component {
                         <TextField label="직월" type="text" name="job" valeu={this.state.job} onChange={this.handleValueChage}/><br/>
                     </DialogContent>
                     <DialogActions>
-                        <Button varient="contained" color="primary" onClick={this.handleFormSubmit}>추가</Button>
-                        <Button varient="ooutlined" color="primary" onClick={this.handleClose}>닫기</Button>
+                        <Button variant="contained" color="primary" onClick={this.handleFormSubmit}>추가</Button>
+                        <Button variant="ooutlined" color="primary" onClick={this.handleClose}>닫기</Button>
                     </DialogActions>
                 </Dialog>
             </div>
