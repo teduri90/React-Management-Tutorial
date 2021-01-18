@@ -143,14 +143,16 @@ class App extends Component {
     super(props);
     this.state = {
       customers: '',
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     }
   }
 
   stateRefresh = () => {
     this.setState({
       customers: '',
-      completed:0
+      completed:0,
+      searchKeyword: ''
     });
     this.callApi()
     .then(res => this.setState({customers: res}))
@@ -162,6 +164,12 @@ class App extends Component {
     this.callApi()
       .then(res => this.setState({customers: res}))
       .catch(err => console.log(err));
+  }
+
+  handleValueChange = (e) => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
   }
 
   callApi = async () => {
@@ -176,6 +184,15 @@ class App extends Component {
   }
 
   render() {
+    const filteredComponents = (data) => {
+      data = data.filter((c) => {
+        return c.name.indexOf(this.state.searchKeyword) > -1;
+      });
+      return data.map((c) => {
+        return <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} name={c.name} image={c.image} birthday={c.birthday} gender={c.gender} job={c.job}/>
+      });
+    }
+
     const { classes } = this.props;
     const celllist = ["번호", "프로필 이미지", "이름", "생년월일", "성별", "직업", "설정"]
     return (
@@ -204,6 +221,9 @@ class App extends Component {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              name="searchKeyword"
+              value={this.state.searchKeyword}
+              onChange={this.handleValueChange}
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
@@ -225,9 +245,8 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.customers ? this.state.customers.map(c =>{ 
-              return ( <Customer stateRefresh={this.stateRefresh} key={c.id} id={c.id} image={c.image} name={c.name} birth={c.birthday} gender={c.gender} job={c.job}/> );
-            }) : 
+            {this.state.customers ?
+              filteredComponents(this.state.customers) :
             <TableRow>
               <TableCell colSpan='6' align='center'>
                 <CircularProgress className={classes.progress} varient="determinate" value={this.state.completed}/>
